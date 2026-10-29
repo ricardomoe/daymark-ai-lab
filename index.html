@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f2f6f3" />
+  <title>Daymark | Task list</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">PERSONAL WORKSPACE</p>
+        <h1>Make room for what matters.</h1>
+        <p class="intro">A clear view of your tasks, deadlines, and who's on them.</p>
+      </div>
+      <p class="today-label" id="todayLabel"></p>
+    </header>
+
+    <section class="summary-grid" aria-label="Task summary">
+      <article class="summary-item summary-open">
+        <span class="summary-label">Open</span>
+        <strong id="openCount">0</strong>
+      </article>
+      <article class="summary-item summary-today">
+        <span class="summary-label">Due today</span>
+        <strong id="todayCount">0</strong>
+      </article>
+      <article class="summary-item summary-overdue">
+        <span class="summary-label">Overdue</span>
+        <strong id="overdueCount">0</strong>
+      </article>
+      <article class="summary-item summary-done">
+        <span class="summary-label">Completed</span>
+        <strong id="doneCount">0</strong>
+      </article>
+    </section>
+
+    <section class="composer" aria-labelledby="addHeading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CAPTURE A TASK</p>
+          <h2 id="addHeading">What needs doing?</h2>
+        </div>
+      </div>
+      <form id="taskForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="taskTitle">Task</label>
+            <input id="taskTitle" name="title" type="text" maxlength="160" placeholder="e.g. Send the project brief" required />
+          </div>
+          <div class="form-group">
+            <label for="taskAssignee">Assigned to</label>
+            <input id="taskAssignee" name="assignee" type="text" maxlength="80" placeholder="Name or team" />
+          </div>
+          <div class="form-group">
+            <label for="taskDeadline">Deadline</label>
+            <input id="taskDeadline" name="deadline" type="datetime-local" />
+          </div>
+          <div class="form-group">
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority" name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="taskDescription">Details <span class="optional">Optional</span></label>
+            <textarea id="taskDescription" name="description" rows="2" maxlength="500" placeholder="Add context or a next step"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit"><span aria-hidden="true">+</span> Add task</button>
+      </form>
+    </section>
+
+    <section class="task-section" aria-labelledby="tasksHeading">
+      <div class="task-section-heading">
+        <div>
+          <p class="eyebrow">YOUR QUEUE</p>
+          <h2 id="tasksHeading">Tasks</h2>
+        </div>
+        <p id="resultCount" class="result-count"></p>
+      </div>
+
+      <div class="toolbar">
+        <div class="filter-group" role="group" aria-label="Filter tasks">
+          <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-btn" type="button" data-filter="pending" aria-pressed="false">Open</button>
+          <button class="filter-btn" type="button" data-filter="today" aria-pressed="false">Today</button>
+          <button class="filter-btn" type="button" data-filter="overdue" aria-pressed="false">Overdue</button>
+          <button class="filter-btn" type="button" data-filter="done" aria-pressed="false">Done</button>
+        </div>
+        <div class="toolbar-controls">
+          <label class="visually-hidden" for="searchInput">Search tasks</label>
+          <input id="searchInput" type="search" placeholder="Search tasks" autocomplete="off" />
+          <label class="visually-hidden" for="sortSelect">Sort tasks</label>
+          <select id="sortSelect">
+            <option value="deadline">Soonest deadline</option>
+            <option value="priority">Priority</option>
+            <option value="newest">Recently added</option>
+          </select>
+        </div>
+      </div>
+
+      <ol id="taskList" class="task-list" aria-label="Tasks"></ol>
+      <div id="emptyState" class="empty-state" hidden>
+        <span class="empty-mark" aria-hidden="true">—</span>
+        <h3 id="emptyTitle">Nothing on the list yet</h3>
+        <p id="emptyDescription">Add a task above to get started.</p>
+      </div>
+      <p id="appStatus" class="app-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <dialog id="editDialog" class="edit-dialog" aria-labelledby="editHeading">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">UPDATE TASK</p>
+        <h2 id="editHeading">Edit task</h2>
+      </div>
+      <button class="icon-button" type="button" data-close-dialog aria-label="Close edit dialog">×</button>
+    </div>
+    <form id="editForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="editTitle">Task</label>
+          <input id="editTitle" name="title" type="text" maxlength="160" required />
+        </div>
+        <div class="form-group">
+          <label for="editAssignee">Assigned to</label>
+          <input id="editAssignee" name="assignee" type="text" maxlength="80" />
+        </div>
+        <div class="form-group">
+          <label for="editDeadline">Deadline</label>
+          <input id="editDeadline" name="deadline" type="datetime-local" />
+        </div>
+        <div class="form-group">
+          <label for="editPriority">Priority</label>
+          <select id="editPriority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="editDescription">Details <span class="optional">Optional</span></label>
+          <textarea id="editDescription" name="description" rows="3" maxlength="500"></textarea>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary" type="button" data-close-dialog>Cancel</button>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
