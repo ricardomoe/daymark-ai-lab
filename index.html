@@ -18,6 +18,11 @@
       <p class="today-label" id="todayLabel"></p>
     </header>
 
+    <nav class="section-nav" aria-label="Workspace sections">
+      <a href="#tasks">Tasks</a>
+      <a href="#potluck">Potluck reservations</a>
+    </nav>
+
     <section class="summary-grid" aria-label="Task summary">
       <article class="summary-item summary-open">
         <span class="summary-label">Open</span>
@@ -75,7 +80,7 @@
       </form>
     </section>
 
-    <section class="task-section" aria-labelledby="tasksHeading">
+    <section class="task-section" id="tasks" aria-labelledby="tasksHeading">
       <div class="task-section-heading">
         <div>
           <p class="eyebrow">YOUR QUEUE</p>
@@ -111,6 +116,56 @@
         <p id="emptyDescription">Add a task above to get started.</p>
       </div>
       <p id="appStatus" class="app-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="reservation-section" id="potluck" aria-labelledby="reservationHeading">
+      <div class="task-section-heading">
+        <div>
+          <p class="eyebrow">POTLUCK</p>
+          <h2 id="reservationHeading">Reserve your spot</h2>
+        </div>
+        <p class="result-count" id="reservationCount"></p>
+      </div>
+
+      <form id="reservationForm" class="reservation-form">
+        <div class="form-grid reservation-details">
+          <div class="form-group">
+            <label for="guestName">Your name</label>
+            <input id="guestName" name="guestName" type="text" maxlength="100" autocomplete="name" placeholder="Name" required />
+          </div>
+          <div class="form-group">
+            <label for="eventId">Event ID</label>
+            <input id="eventId" name="eventId" type="text" maxlength="80" placeholder="e.g. FALL-POTLUCK-26" required />
+          </div>
+        </div>
+
+        <div class="contribution-heading">
+          <div>
+            <h3>Items you're bringing</h3>
+            <p>Enter the cost for each item in USD.</p>
+          </div>
+          <button class="btn btn-secondary" id="addContribution" type="button"><span aria-hidden="true">+</span> Add item</button>
+        </div>
+        <div id="contributionRows" class="contribution-rows"></div>
+        <p class="contribution-total">Estimated total <strong id="contributionTotal">$0.00</strong></p>
+        <button class="btn btn-primary" type="submit"><span aria-hidden="true">+</span> Book reservation</button>
+      </form>
+
+      <div class="reservation-list-heading">
+        <div>
+          <h3>Potluck reservations</h3>
+          <p>Look up contributions by event ID.</p>
+        </div>
+        <label class="visually-hidden" for="eventSearch">Search reservations by event ID</label>
+        <input id="eventSearch" class="event-search" type="search" placeholder="Filter by event ID" autocomplete="off" />
+      </div>
+      <ul id="reservationList" class="reservation-list" aria-label="Potluck reservations"></ul>
+      <div id="reservationEmpty" class="empty-state" hidden>
+        <span class="empty-mark" aria-hidden="true">—</span>
+        <h3 id="reservationEmptyTitle">No reservations yet</h3>
+        <p id="reservationEmptyDescription">Book a spot above and add what you're bringing.</p>
+      </div>
+      <p id="reservationStatus" class="app-status" role="status" aria-live="polite"></p>
     </section>
   </main>
 

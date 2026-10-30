@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'todo-tasks';
+const RESERVATION_STORAGE_KEY = 'potluck-reservations';
 const priorityRank = { high: 0, medium: 1, low: 2 };
 const elements = {
   taskForm: document.getElementById('taskForm'),
@@ -9,11 +10,19 @@ const elements = {
   emptyTitle: document.getElementById('emptyTitle'),
   emptyDescription: document.getElementById('emptyDescription'),
   appStatus: document.getElementById('appStatus'),
+  reservationForm: document.getElementById('reservationForm'),
+  contributionRows: document.getElementById('contributionRows'),
+  reservationList: document.getElementById('reservationList'),
+  reservationEmpty: document.getElementById('reservationEmpty'),
+  reservationEmptyTitle: document.getElementById('reservationEmptyTitle'),
+  reservationEmptyDescription: document.getElementById('reservationEmptyDescription'),
+  reservationStatus: document.getElementById('reservationStatus'),
 };
 
 let currentFilter = 'all';
 let editedTaskId = null;
 let tasks = loadTasks();
+let reservations = loadReservations();
 
 function createId() {
   if (window.crypto && typeof window.crypto.randomUUID === 'function') {
@@ -49,6 +58,108 @@ function saveTasks() {
     elements.appStatus.textContent = '';
   } catch {
     elements.appStatus.textContent = 'Browser storage is unavailable. Changes will not survive a refresh.';
+  }
+}
+
+function loadReservations() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(RESERVATION_STORAGE_KEY) || '[]');
+    if (!Array.isArray(stored)) return [];
+
+    return stored.filter(reservation => reservation && typeof reservation === 'object' &&
+      typeof reservation.name === 'string' && typeof reservation.eventId === 'string' &&
+      Array.isArray(reservation.items))
+      .map(reservation => ({
+        id: String(reservation.id || createId()),
+        name: reservation.name,
+        eventId: reservation.eventId,
+        createdAt: typeof reservation.createdAt === 'string' ? reservation.createdAt : new Date().toISOString(),
+        items: reservation.items.filter(item => item && typeof item.name === 'string' &&
+          Number.isFinite(Number(item.cost)) && Number(item.cost) >= 0)
+          .map(item => ({ name: item.name, cost: Number(item.cost) }))
+          .filter(item => item.name.trim()),
+      }))
+      .filter(reservation => reservation.name.trim() && reservation.eventId.trim() && reservation.items.length);
+  } catch {
+    return [];
+  }
+}
+
+function saveReservations() {
+  try {
+    localStorage.setItem(RESERVATION_STORAGE_KEY, JSON.stringify(reservations));
+    elements.reservationStatus.textContent = '';
+  } catch {
+    elements.reservationStatus.textContent = 'Browser storage is unavailable. Reservations will not survive a refresh.';
+  }
+}
+
+function formatCurrency(amount) {
+  return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(amount);
+}
+
+function addContributionRow() {
+  const row = document.createElement('div');
+  row.className = 'contribution-row';
+  row.innerHTML = `
+    <label class="form-group">
+      <span>Item</span>
+      <input type="text" data-contribution-name maxlength="120" placeholder="e.g. Garden salad" required />
+    </label>
+    <label class="form-group">
+      <span>Cost each (USD)</span>
+      <input type="number" data-contribution-cost min="0" step="0.01" inputmode="decimal" placeholder="0.00" required />
+    </label>
+    <button class="remove-contribution" type="button" data-remove-contribution aria-label="Remove item">×</button>`;
+  elements.contributionRows.append(row);
+  updateContributionRows();
+}
+
+function updateContributionRows() {
+  const rows = elements.contributionRows.querySelectorAll('.contribution-row');
+  rows.forEach(row => {
+    row.querySelector('[data-remove-contribution]').disabled = rows.length === 1;
+  });
+  updateContributionTotal();
+}
+
+function updateContributionTotal() {
+  const total = Array.from(elements.contributionRows.querySelectorAll('[data-contribution-cost]'))
+    .reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+  document.getElementById('contributionTotal').textContent = formatCurrency(total);
+}
+
+function renderReservation(reservation) {
+  const id = escapeHtml(reservation.id);
+  const items = reservation.items.map(item => `
+    <li>${escapeHtml(item.name)} <strong>${formatCurrency(item.cost)}</strong></li>`).join('');
+  const total = reservation.items.reduce((sum, item) => sum + item.cost, 0);
+
+  return `
+    <li class="reservation-item" data-reservation-id="${id}">
+      <div>
+        <h4>${escapeHtml(reservation.name)}</h4>
+        <p class="reservation-event">Event ID · <strong>${escapeHtml(reservation.eventId)}</strong></p>
+        <ul class="reservation-contributions">${items}</ul>
+        <p class="reservation-total">Contribution total <strong>${formatCurrency(total)}</strong></p>
+      </div>
+      <button class="action-button action-delete" type="button" data-delete-reservation aria-label="Remove reservation for ${escapeHtml(reservation.name)}">Remove</button>
+    </li>`;
+}
+
+function renderReservations() {
+  const search = document.getElementById('eventSearch').value.trim().toLocaleLowerCase();
+  const visibleReservations = reservations.filter(reservation => reservation.eventId.toLocaleLowerCase().includes(search));
+  elements.reservationList.innerHTML = visibleReservations.map(renderReservation).join('');
+  document.getElementById('reservationCount').textContent = `${visibleReservations.length} ${visibleReservations.length === 1 ? 'reservation' : 'reservations'}`;
+  elements.reservationEmpty.hidden = visibleReservations.length > 0;
+
+  if (!reservations.length) {
+    elements.reservationEmptyTitle.textContent = 'No reservations yet';
+    elements.reservationEmptyDescription.textContent = 'Book a spot above and add what you\'re bringing.';
+  } else {
+    elements.reservationEmptyTitle.textContent = 'No matching reservations';
+    elements.reservationEmptyDescription.textContent = 'Check the event ID and try again.';
   }
 }
 
@@ -238,6 +349,49 @@ document.querySelectorAll('[data-close-dialog]').forEach(button => {
   button.addEventListener('click', () => elements.editDialog.close());
 });
 
+document.getElementById('addContribution').addEventListener('click', addContributionRow);
+elements.contributionRows.addEventListener('click', event => {
+  if (!event.target.closest('[data-remove-contribution]')) return;
+  event.target.closest('.contribution-row').remove();
+  updateContributionRows();
+});
+elements.contributionRows.addEventListener('input', updateContributionTotal);
+
+elements.reservationForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const formData = new FormData(elements.reservationForm);
+  const items = Array.from(elements.contributionRows.querySelectorAll('.contribution-row')).map(row => ({
+    name: row.querySelector('[data-contribution-name]').value.trim(),
+    cost: Number(row.querySelector('[data-contribution-cost]').value),
+  }));
+
+  reservations.unshift({
+    id: createId(),
+    name: formData.get('guestName').trim(),
+    eventId: formData.get('eventId').trim(),
+    items,
+    createdAt: new Date().toISOString(),
+  });
+  saveReservations();
+  elements.reservationForm.reset();
+  elements.contributionRows.innerHTML = '';
+  addContributionRow();
+  renderReservations();
+  document.getElementById('guestName').focus();
+});
+
+document.getElementById('eventSearch').addEventListener('input', renderReservations);
+elements.reservationList.addEventListener('click', event => {
+  const button = event.target.closest('[data-delete-reservation]');
+  if (!button) return;
+  const item = button.closest('[data-reservation-id]');
+  const reservation = reservations.find(candidate => candidate.id === item.dataset.reservationId);
+  if (!reservation || !window.confirm(`Remove ${reservation.name}'s reservation for event ${reservation.eventId}?`)) return;
+  reservations = reservations.filter(candidate => candidate.id !== reservation.id);
+  saveReservations();
+  renderReservations();
+});
+
 elements.editDialog.addEventListener('close', () => {
   if (editedTaskId) {
     const editedItem = Array.from(elements.taskList.querySelectorAll('[data-task-id]'))
@@ -252,6 +406,12 @@ window.addEventListener('storage', event => {
     tasks = loadTasks();
     renderTasks();
   }
+  if (event.key === RESERVATION_STORAGE_KEY || event.key === null) {
+    reservations = loadReservations();
+    renderReservations();
+  }
 });
 
+addContributionRow();
 renderTasks();
+renderReservations();

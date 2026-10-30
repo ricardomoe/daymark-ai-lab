@@ -1,2 +1,19 @@
-Hello World!
-Testing push from Ricardo
+# Daymark
+
+A browser-based task list and potluck reservation app built with HTML, CSS, and JavaScript.
+
+## Features
+
+- Create, edit, complete, filter, search, and sort tasks
+- Add task assignees, deadlines, and priorities
+- Book potluck reservations with a name and event ID
+- Add multiple contribution items with an individual USD cost
+- View each reservation's total and search by event ID
+
+## Run locally
+
+Open `index.html` in a web browser. No installation or build step is required.
+
+## Data storage
+
+Tasks and reservations are saved in this browser's local storage. They are not synced or shared with other people, and clearing browser data may remove them. This app is best for personal use or testing; shared event signups would need a server or database.
