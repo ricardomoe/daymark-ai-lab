@@ -206,6 +206,7 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .contact-manager-card { padding: clamp(25px, 4vw, 46px); background: var(--forest); color: #fff; }
 .contact-manager-card .eyebrow { color: #e1b58d; }
 .contact-manager-card h2 { margin: 0 0 26px; color: #fff; font-size: 2.4rem; }
+.contact-manager-photo { display: block; width: 100%; max-width: 320px; height: auto; margin-bottom: 24px; }
 .contact-manager-card .contact-details { grid-template-columns: 1fr; }
 .contact-manager-card .contact-details li { border-color: rgb(255 255 255 / 18%); }
 .contact-manager-card .contact-details span { color: #b7c5bd; }
