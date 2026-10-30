@@ -1,19 +1,19 @@
-# Daymark
+# Bella Vista Events by Juliana Anschau
 
-A browser-based task list and potluck reservation app built with HTML, CSS, and JavaScript.
+A responsive static website for Bella Vista Events by Juliana Anschau, a British Columbia venue offering weddings, corporate events, and birthday celebrations. The site introduces Juliana and directs visitors to event details and booking inquiries.
 
-## Features
+## Pages
 
-- Create, edit, complete, filter, search, and sort tasks
-- Add task assignees, deadlines, and priorities
-- Book potluck reservations with a name and event ID
-- Add multiple contribution items with an individual USD cost
-- View each reservation's total and search by event ID
+- `index.html`: event-selection landing page
+- `weddings.html`: wedding packages, amenities, gallery, and inquiry details
+- `corporate.html`: corporate reservations, amenities, gallery, and inquiry details
+- `birthdays.html`: birthday reservations, amenities, gallery, and inquiry details
+- `contact.html`: venue contact information and inquiry form
 
 ## Run locally
 
-Open `index.html` in a web browser. No installation or build step is required.
+Open `index.html` in a browser. No build step or package installation is required. The site uses remote photography from Unsplash and Google Fonts, so those assets require an internet connection.
 
-## Data storage
+## Before publishing
 
-Tasks and reservations are saved in this browser's local storage. They are not synced or shared with other people, and clearing browser data may remove them. This app is best for personal use or testing; shared event signups would need a server or database.
+Juliana's email, phone, WhatsApp number, and venue address are defined in `site.js` and populated across the pages. The contact form opens a prepared email draft; sending inquiries requires the visitor's email app. This static site does not store or share reservations.

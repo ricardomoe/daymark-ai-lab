@@ -3,214 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f2f6f3" />
-  <title>Daymark | Task list</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#172e27" />
+  <meta name="description" content="Alder & Summit is a British Columbia mountain venue for weddings, corporate gatherings, and birthdays, thoughtfully hosted by Juliana Anschau." />
+  <title>Alder & Summit | British Columbia Event Venue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="venue.css" />
 </head>
 <body>
-  <main class="app-shell">
-    <header class="page-header">
-      <div>
-        <p class="eyebrow">PERSONAL WORKSPACE</p>
-        <h1>Make room for what matters.</h1>
-        <p class="intro">A clear view of your tasks, deadlines, and who's on them.</p>
-      </div>
-      <p class="today-label" id="todayLabel"></p>
-    </header>
-
-    <nav class="section-nav" aria-label="Workspace sections">
-      <a href="#tasks">Tasks</a>
-      <a href="#potluck">Potluck reservations</a>
+  <div class="manager-banner">Event Manager <strong>Juliana Anschau</strong><span> · </span>British Columbia</div>
+  <header class="site-header">
+    <a class="wordmark" href="index.html" aria-label="Alder and Summit home"><span class="wordmark-main">ALDER <i>&</i> SUMMIT</span><span class="wordmark-sub">BRITISH COLUMBIA</span></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNav"><span class="menu-icon" aria-hidden="true"></span><span>Menu</span></button>
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+      <a class="is-current" href="index.html" aria-current="page">Home</a>
+      <a href="weddings.html">Weddings</a>
+      <a href="corporate.html">Corporate Events</a>
+      <a href="birthdays.html">Birthdays</a>
+      <a href="contact.html">Contact</a>
     </nav>
+  </header>
 
-    <section class="summary-grid" aria-label="Task summary">
-      <article class="summary-item summary-open">
-        <span class="summary-label">Open</span>
-        <strong id="openCount">0</strong>
-      </article>
-      <article class="summary-item summary-today">
-        <span class="summary-label">Due today</span>
-        <strong id="todayCount">0</strong>
-      </article>
-      <article class="summary-item summary-overdue">
-        <span class="summary-label">Overdue</span>
-        <strong id="overdueCount">0</strong>
-      </article>
-      <article class="summary-item summary-done">
-        <span class="summary-label">Completed</span>
-        <strong id="doneCount">0</strong>
-      </article>
+  <main>
+    <section class="home-intro" aria-labelledby="homeHeading">
+      <div>
+        <p class="eyebrow">A PLACE TO GATHER, A VIEW TO REMEMBER</p>
+        <h1 id="homeHeading">Make the moment <em>feel like yours.</em></h1>
+      </div>
+      <p class="home-intro-copy">An intimate mountain-side setting for celebrations worth bringing everyone together for. Find the gathering that feels like you.</p>
     </section>
 
-    <section class="composer" aria-labelledby="addHeading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">CAPTURE A TASK</p>
-          <h2 id="addHeading">What needs doing?</h2>
+    <section class="event-grid" aria-label="Choose an event">
+      <a class="event-card event-wedding" href="weddings.html">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="An elegant outdoor wedding reception beneath a canopy" fetchpriority="high" />
+        <span class="event-card-index">01 / THE CELEBRATION</span>
+        <div class="event-card-content">
+          <p>For the beginning of everything</p>
+          <h2>Weddings</h2>
+          <span class="text-link">Explore weddings <b aria-hidden="true">↗</b></span>
         </div>
-      </div>
-      <form id="taskForm">
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="taskTitle">Task</label>
-            <input id="taskTitle" name="title" type="text" maxlength="160" placeholder="e.g. Send the project brief" required />
-          </div>
-          <div class="form-group">
-            <label for="taskAssignee">Assigned to</label>
-            <input id="taskAssignee" name="assignee" type="text" maxlength="80" placeholder="Name or team" />
-          </div>
-          <div class="form-group">
-            <label for="taskDeadline">Deadline</label>
-            <input id="taskDeadline" name="deadline" type="datetime-local" />
-          </div>
-          <div class="form-group">
-            <label for="taskPriority">Priority</label>
-            <select id="taskPriority" name="priority">
-              <option value="low">Low</option>
-              <option value="medium" selected>Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-          <div class="form-group full-width">
-            <label for="taskDescription">Details <span class="optional">Optional</span></label>
-            <textarea id="taskDescription" name="description" rows="2" maxlength="500" placeholder="Add context or a next step"></textarea>
-          </div>
+      </a>
+      <a class="event-card event-corporate" href="corporate.html">
+        <img src="https://urportland.com/wp-content/uploads/2025/04/122.jpg" alt="A corporate team gathered for an event in a venue" loading="lazy" />
+        <span class="event-card-index">02 / THE GATHERING</span>
+        <div class="event-card-content">
+          <p>For ideas that move people</p>
+          <h2>Corporate events</h2>
+          <span class="text-link">Explore corporate <b aria-hidden="true">↗</b></span>
         </div>
-        <button class="btn btn-primary" type="submit"><span aria-hidden="true">+</span> Add task</button>
-      </form>
+      </a>
+      <a class="event-card event-birthday" href="birthdays.html">
+        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="A joyful birthday celebration with colorful decorations" loading="lazy" />
+        <span class="event-card-index">03 / THE MILESTONE</span>
+        <div class="event-card-content">
+          <p>For another trip around the sun</p>
+          <h2>Birthdays</h2>
+          <span class="text-link">Explore birthdays <b aria-hidden="true">↗</b></span>
+        </div>
+      </a>
     </section>
 
-    <section class="task-section" id="tasks" aria-labelledby="tasksHeading">
-      <div class="task-section-heading">
-        <div>
-          <p class="eyebrow">YOUR QUEUE</p>
-          <h2 id="tasksHeading">Tasks</h2>
-        </div>
-        <p id="resultCount" class="result-count"></p>
+    <section class="host-note" aria-labelledby="hostHeading">
+      <div class="host-note-image">
+        <img src="https://cdn.thespaces.com/wp-content/uploads/2025/08/DSC02713-2_1600.jpg" alt="A remote alpine refuge in a mountain valley" loading="lazy" />
+        <span>ALPINE REFUGE · PHOTOGRAPHY COURTESY <a href="https://thespaces.com/this-alpine-refuge-offers-a-slow-version-of-intrepid-travel/">RIFUGIO VAL DI TOGNO</a></span>
       </div>
-
-      <div class="toolbar">
-        <div class="filter-group" role="group" aria-label="Filter tasks">
-          <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">All</button>
-          <button class="filter-btn" type="button" data-filter="pending" aria-pressed="false">Open</button>
-          <button class="filter-btn" type="button" data-filter="today" aria-pressed="false">Today</button>
-          <button class="filter-btn" type="button" data-filter="overdue" aria-pressed="false">Overdue</button>
-          <button class="filter-btn" type="button" data-filter="done" aria-pressed="false">Done</button>
-        </div>
-        <div class="toolbar-controls">
-          <label class="visually-hidden" for="searchInput">Search tasks</label>
-          <input id="searchInput" type="search" placeholder="Search tasks" autocomplete="off" />
-          <label class="visually-hidden" for="sortSelect">Sort tasks</label>
-          <select id="sortSelect">
-            <option value="deadline">Soonest deadline</option>
-            <option value="priority">Priority</option>
-            <option value="newest">Recently added</option>
-          </select>
-        </div>
+      <div class="host-note-copy">
+        <p class="eyebrow">A THOUGHTFUL HOST MAKES THE DIFFERENCE</p>
+        <h2 id="hostHeading">Here for the details.<br /><em>There for the feeling.</em></h2>
+        <p>Every celebration is different. Event Manager Juliana Anschau brings a calm, personal touch to planning, so your time here feels effortless from the first conversation to the last toast.</p>
+        <a class="text-link text-link-dark" href="contact.html">Meet your event manager <b aria-hidden="true">↗</b></a>
       </div>
-
-      <ol id="taskList" class="task-list" aria-label="Tasks"></ol>
-      <div id="emptyState" class="empty-state" hidden>
-        <span class="empty-mark" aria-hidden="true">—</span>
-        <h3 id="emptyTitle">Nothing on the list yet</h3>
-        <p id="emptyDescription">Add a task above to get started.</p>
-      </div>
-      <p id="appStatus" class="app-status" role="status" aria-live="polite"></p>
-    </section>
-
-    <section class="reservation-section" id="potluck" aria-labelledby="reservationHeading">
-      <div class="task-section-heading">
-        <div>
-          <p class="eyebrow">POTLUCK</p>
-          <h2 id="reservationHeading">Reserve your spot</h2>
-        </div>
-        <p class="result-count" id="reservationCount"></p>
-      </div>
-
-      <form id="reservationForm" class="reservation-form">
-        <div class="form-grid reservation-details">
-          <div class="form-group">
-            <label for="guestName">Your name</label>
-            <input id="guestName" name="guestName" type="text" maxlength="100" autocomplete="name" placeholder="Name" required />
-          </div>
-          <div class="form-group">
-            <label for="eventId">Event ID</label>
-            <input id="eventId" name="eventId" type="text" maxlength="80" placeholder="e.g. FALL-POTLUCK-26" required />
-          </div>
-        </div>
-
-        <div class="contribution-heading">
-          <div>
-            <h3>Items you're bringing</h3>
-            <p>Enter the cost for each item in USD.</p>
-          </div>
-          <button class="btn btn-secondary" id="addContribution" type="button"><span aria-hidden="true">+</span> Add item</button>
-        </div>
-        <div id="contributionRows" class="contribution-rows"></div>
-        <p class="contribution-total">Estimated total <strong id="contributionTotal">$0.00</strong></p>
-        <button class="btn btn-primary" type="submit"><span aria-hidden="true">+</span> Book reservation</button>
-      </form>
-
-      <div class="reservation-list-heading">
-        <div>
-          <h3>Potluck reservations</h3>
-          <p>Look up contributions by event ID.</p>
-        </div>
-        <label class="visually-hidden" for="eventSearch">Search reservations by event ID</label>
-        <input id="eventSearch" class="event-search" type="search" placeholder="Filter by event ID" autocomplete="off" />
-      </div>
-      <ul id="reservationList" class="reservation-list" aria-label="Potluck reservations"></ul>
-      <div id="reservationEmpty" class="empty-state" hidden>
-        <span class="empty-mark" aria-hidden="true">—</span>
-        <h3 id="reservationEmptyTitle">No reservations yet</h3>
-        <p id="reservationEmptyDescription">Book a spot above and add what you're bringing.</p>
-      </div>
-      <p id="reservationStatus" class="app-status" role="status" aria-live="polite"></p>
     </section>
   </main>
 
-  <dialog id="editDialog" class="edit-dialog" aria-labelledby="editHeading">
-    <div class="dialog-header">
-      <div>
-        <p class="eyebrow">UPDATE TASK</p>
-        <h2 id="editHeading">Edit task</h2>
+  <footer class="site-footer" id="contact">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a class="wordmark wordmark-light" href="index.html"><span class="wordmark-main">ALDER <i>&</i> SUMMIT</span><span class="wordmark-sub">BRITISH COLUMBIA</span></a>
+        <p>A considered setting for gatherings that stay with you.</p>
       </div>
-      <button class="icon-button" type="button" data-close-dialog aria-label="Close edit dialog">×</button>
+      <div class="footer-contact" id="contact-information">
+        <p class="eyebrow">CONTACT INFORMATION</p>
+        <p><span>Event Manager</span><strong>Juliana Anschau</strong></p>
+        <p><span>Email</span><strong>[insert email address]</strong></p>
+        <p><span>Phone</span><strong>[insert phone number]</strong></p>
+        <p><span>WhatsApp</span><strong>[insert WhatsApp number]</strong></p>
+        <p><span>Venue location</span><strong>[insert location], British Columbia</strong></p>
+      </div>
+      <div class="footer-links">
+        <p class="eyebrow">EXPLORE</p>
+        <a href="weddings.html">Weddings</a>
+        <a href="corporate.html">Corporate events</a>
+        <a href="birthdays.html">Birthdays</a>
+        <a href="contact.html">Contact Juliana</a>
+      </div>
     </div>
-    <form id="editForm">
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="editTitle">Task</label>
-          <input id="editTitle" name="title" type="text" maxlength="160" required />
-        </div>
-        <div class="form-group">
-          <label for="editAssignee">Assigned to</label>
-          <input id="editAssignee" name="assignee" type="text" maxlength="80" />
-        </div>
-        <div class="form-group">
-          <label for="editDeadline">Deadline</label>
-          <input id="editDeadline" name="deadline" type="datetime-local" />
-        </div>
-        <div class="form-group">
-          <label for="editPriority">Priority</label>
-          <select id="editPriority" name="priority">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </div>
-        <div class="form-group full-width">
-          <label for="editDescription">Details <span class="optional">Optional</span></label>
-          <textarea id="editDescription" name="description" rows="3" maxlength="500"></textarea>
-        </div>
-      </div>
-      <div class="dialog-actions">
-        <button class="btn btn-secondary" type="button" data-close-dialog>Cancel</button>
-        <button class="btn btn-primary" type="submit">Save changes</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
+    <div class="footer-bottom"><span>© <span data-year></span> Alder & Summit</span><span>Thoughtfully hosted by Juliana Anschau</span></div>
+  </footer>
+  <script src="site.js"></script>
 </body>
 </html>
