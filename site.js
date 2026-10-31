@@ -2,7 +2,7 @@ const menuButton = document.querySelector('.menu-toggle');
 const mainNav = document.querySelector('.main-nav');
 const venueName = 'Bella Vista Events by Juliana Anschau';
 const contactInformation = {
-  Email: { text: 'Juliana@churrasco.online', href: 'mailto:Juliana@churrasco.online' },
+  Email: { text: 'juliana@churrasco.online', href: 'mailto:juliana@churrasco.online' },
   Phone: { text: '604-404-1562', href: 'tel:+16044041562' },
   WhatsApp: { text: '604-404-1562', href: 'https://wa.me/16044041562' },
   'Venue location': { text: 'Golden Ears Provincial Park, 24480 Fern Crescent, Maple Ridge, BC V4R 2S1' },
@@ -79,7 +79,7 @@ document.querySelectorAll('.wordmark[aria-label]').forEach(mark => {
   mark.setAttribute('aria-label', mark.closest('.site-header') ? 'Bella Vista event venue home' : `${venueName} home`);
 });
 document.querySelectorAll('.manager-banner').forEach(banner => {
-  banner.textContent = 'A beautiful setting for your celebration · British Columbia';
+  banner.remove();
 });
 document.querySelectorAll('.footer-links a[href="contact.html"]').forEach(link => {
   link.textContent = 'Contact Us';
@@ -149,6 +149,20 @@ document.querySelectorAll('.wedding-carousel').forEach(carousel => {
   const status = carousel.querySelector('.carousel-status');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let currentIndex = 0;
+  let autoplay = !reducedMotion.matches;
+  let hovered = false;
+  let focused = false;
+  let visible = false;
+  let autoplayTimer;
+
+  const playback = document.createElement('div');
+  playback.className = 'carousel-playback';
+  const playbackButton = document.createElement('button');
+  playbackButton.type = 'button';
+  playbackButton.className = 'carousel-arrow';
+  playbackButton.setAttribute('aria-controls', viewport.id);
+  carousel.append(playback);
+  playback.append(playbackButton, status);
 
   const showPhoto = index => {
     const nextIndex = (index + photos.length) % photos.length;
@@ -157,6 +171,48 @@ document.querySelectorAll('.wedding-carousel').forEach(carousel => {
       behavior: reducedMotion.matches ? 'instant' : 'smooth',
     });
   };
+
+  const syncAutoplay = () => {
+    clearInterval(autoplayTimer);
+    const label = autoplay ? 'Pause slideshow' : 'Play slideshow';
+    playbackButton.textContent = autoplay ? '\u23F8' : '\u25B6';
+    playbackButton.setAttribute('aria-label', label);
+    playbackButton.title = label;
+    status.setAttribute('aria-live', autoplay ? 'off' : 'polite');
+    if (autoplay && visible && !hovered && !focused && !document.hidden) {
+      autoplayTimer = setInterval(() => showPhoto(currentIndex + 1), 1000);
+    }
+  };
+
+  playbackButton.addEventListener('click', () => {
+    autoplay = !autoplay;
+    syncAutoplay();
+  });
+  carousel.addEventListener('mouseenter', () => {
+    hovered = true;
+    syncAutoplay();
+  });
+  carousel.addEventListener('mouseleave', () => {
+    hovered = false;
+    syncAutoplay();
+  });
+  carousel.addEventListener('focusin', event => {
+    focused = event.target !== playbackButton;
+    syncAutoplay();
+  });
+  carousel.addEventListener('focusout', event => {
+    focused = carousel.contains(event.relatedTarget) && event.relatedTarget !== playbackButton;
+    syncAutoplay();
+  });
+  document.addEventListener('visibilitychange', syncAutoplay);
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) autoplay = false;
+    syncAutoplay();
+  });
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    syncAutoplay();
+  }).observe(carousel);
 
   const dots = photos.map((photo, index) => {
     const button = document.createElement('button');
@@ -192,6 +248,7 @@ document.querySelectorAll('.wedding-carousel').forEach(carousel => {
   carousel.querySelector('.carousel-controls').hidden = false;
   status.hidden = false;
   updateSelection();
+  syncAutoplay();
 });
 
 const visitForm = document.getElementById('visitForm');
@@ -247,6 +304,9 @@ if (visitForm) {
 
 const inquiryForm = document.getElementById('inquiryForm');
 if (inquiryForm) {
+  const inquiryStatus = document.getElementById('formStatus');
+  const whatsAppLink = document.getElementById('inquiryWhatsApp');
+  const emailLink = document.getElementById('inquiryEmailDraft');
   const query = new URLSearchParams(window.location.search);
   const eventSelect = document.getElementById('inquiryEvent');
   const eventTypes = {
@@ -262,25 +322,54 @@ if (inquiryForm) {
     document.getElementById('inquiryMessage').value = `I am interested in the ${packageName} package.`;
   }
 
+  inquiryForm.addEventListener('input', () => {
+    inquiryStatus.textContent = '';
+    [whatsAppLink, emailLink].forEach(link => {
+      link.hidden = true;
+      link.removeAttribute('href');
+    });
+    inquiryForm.querySelectorAll('input').forEach(input => input.setCustomValidity(''));
+  });
   inquiryForm.addEventListener('submit', event => {
     event.preventDefault();
+    ['inquiryName', 'inquiryPhone'].forEach(id => {
+      const input = document.getElementById(id);
+      input.setCustomValidity(input.value.trim() ? '' : 'Please enter your contact information.');
+    });
+    if (!inquiryForm.reportValidity()) return;
     const details = Object.fromEntries(new FormData(inquiryForm));
-    const emailLabel = document.querySelector('.contact-manager-card [data-contact-email]')?.textContent.trim() || '';
-    const recipient = emailLabel.startsWith('[') ? '' : emailLabel;
-    const subject = `${details.event || 'Venue'} inquiry from ${details.name}`;
-    const body = [
-      `Name: ${details.name}`,
-      `Email: ${details.email}`,
+    const message = [
+      'Hello Juliana! I would like to plan an event at Bella Vista Events.',
+      '',
+      `Name: ${details.name.trim()}`,
+      `Email: ${details.email.trim()}`,
+      `Phone: ${details.phone.trim()}`,
       `Event: ${details.event || 'Not specified'}`,
       `Preferred date: ${details.date || 'Not specified'}`,
       `Guest count: ${details.guests || 'Not specified'}`,
       '',
-      details.message || '',
+      details.message.trim(),
     ].join('\n');
 
-    document.getElementById('formStatus').textContent = recipient
-      ? 'Your email app is opening with the inquiry details.'
-      : 'Your email app will open with a draft. Add Juliana’s email address in the Contact Information before publishing.';
-    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    [whatsAppLink, emailLink].forEach(link => {
+      link.hidden = true;
+      link.removeAttribute('href');
+    });
+    if (event.submitter?.value === 'email') {
+      const subject = `${details.event || 'Venue'} inquiry from ${details.name.trim()}`;
+      const destination = new URL(contactInformation.Email.href);
+      destination.search = `?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      emailLink.href = destination.href;
+      emailLink.hidden = false;
+      inquiryStatus.textContent = 'Your email inquiry is ready. Review and send it in your email app. If it does not open, use the link below with a configured email app.';
+      emailLink.click();
+      return;
+    }
+    const destination = new URL(contactInformation.WhatsApp.href);
+    destination.searchParams.set('text', message);
+    whatsAppLink.href = destination.href;
+    whatsAppLink.hidden = false;
+    inquiryStatus.textContent = 'Your inquiry is ready. Send it in WhatsApp so Juliana can discuss your event with you.';
+    window.open(destination.href, '_blank', 'noopener,noreferrer');
   });
 }

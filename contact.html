@@ -49,21 +49,29 @@
             <li><span>WhatsApp</span><a data-contact-whatsapp href="https://wa.me/" target="_blank" rel="noopener">[insert WhatsApp number]</a></li>
             <li><span>Venue location</span><strong data-contact-location>[insert location], British Columbia</strong></li>
           </ul>
-          <div class="contact-actions"><a class="button" data-contact-email href="mailto:?subject=Venue%20inquiry">Email Us <span aria-hidden="true">↗</span></a><a class="button button-outline" data-contact-whatsapp href="https://wa.me/" target="_blank" rel="noopener">WhatsApp <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="contact-form-panel" aria-labelledby="inquiryHeading">
           <p class="eyebrow">EVENT INQUIRY</p>
           <h2 id="inquiryHeading">Start with the details.</h2>
           <form class="inquiry-form" id="inquiryForm">
-            <div class="form-field"><label for="inquiryName">Your name</label><input id="inquiryName" name="name" autocomplete="name" required /></div>
-            <div class="form-field"><label for="inquiryEmail">Your email</label><input id="inquiryEmail" name="email" type="email" autocomplete="email" required /></div>
+            <div class="form-field"><label for="inquiryName">Your name</label><input id="inquiryName" name="name" autocomplete="name" maxlength="100" required /></div>
+            <div class="form-field"><label for="inquiryEmail">Your email</label><input id="inquiryEmail" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
+            <div class="form-field"><label for="inquiryPhone">Phone</label><input id="inquiryPhone" name="phone" type="tel" autocomplete="tel" minlength="7" maxlength="40" required /></div>
             <div class="form-field"><label for="inquiryEvent">Event type</label><select id="inquiryEvent" name="event"><option value="">Choose an event</option><option value="Wedding">Wedding</option><option value="Corporate event">Corporate event</option><option value="Birthday">Birthday</option><option value="Other gathering">Other gathering</option></select></div>
             <div class="form-field"><label for="inquiryDate">Preferred date</label><input id="inquiryDate" name="date" type="date" /></div>
             <div class="form-field"><label for="inquiryGuests">Guest count</label><input id="inquiryGuests" name="guests" type="number" min="1" inputmode="numeric" placeholder="Approximate number" /></div>
-            <div class="form-field full"><label for="inquiryMessage">A few event details</label><textarea id="inquiryMessage" name="message" placeholder="What are you planning? Include a package or timing you’re interested in."></textarea></div>
-            <button class="button button-dark" type="submit">Prepare email inquiry <span aria-hidden="true">↗</span></button>
+            <div class="form-field full"><label for="inquiryMessage">A few event details</label><textarea id="inquiryMessage" name="message" maxlength="1000" placeholder="What are you planning? Include a package or timing you’re interested in."></textarea></div>
+            <label class="visit-consent"><input type="checkbox" required />I agree to share these details with Juliana by email or WhatsApp for this event inquiry.</label>
+            <div class="inquiry-actions">
+              <button class="button button-outline button-outline-dark" type="submit" name="channel" value="email">Email <span aria-hidden="true">↗</span></button>
+              <button class="button button-dark" type="submit" name="channel" value="whatsapp">Continue to WhatsApp <span aria-hidden="true">↗</span></button>
+            </div>
+            <p class="visit-note">Review and send the prepared message in your email app or WhatsApp so we can discuss your celebration.</p>
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+            <a class="text-link text-link-dark visit-whatsapp" id="inquiryEmailDraft" hidden>Open your email inquiry <span aria-hidden="true">↗</span></a>
+            <a class="text-link text-link-dark visit-whatsapp" id="inquiryWhatsApp" target="_blank" rel="noopener" hidden>Open your WhatsApp inquiry <span aria-hidden="true">↗</span></a>
           </form>
+          <noscript><p>The inquiry form needs JavaScript. <a href="https://wa.me/16044041562" target="_blank" rel="noopener">Contact Juliana on WhatsApp</a> to discuss your event.</p></noscript>
         </section>
       </div>
     </section>

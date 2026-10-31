@@ -46,11 +46,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: relative;
   z-index: 5;
   display: flex;
-  min-height: 84px;
+  min-height: 112px;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
-  padding: 12px clamp(22px, 5vw, 78px);
+  padding: 22px clamp(22px, 5vw, 78px);
   border-bottom: 1px solid rgb(255 255 255 / 10%);
   background: var(--forest-deep);
 }
@@ -58,11 +58,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .wordmark-main { font-family: "Playfair Display", Georgia, serif; font-size: 1.28rem; letter-spacing: 0.075em; line-height: 1; }
 .wordmark-main i { color: var(--copper); font-style: normal; }
 .wordmark-sub { color: #c9bba8; font-size: 0.54rem; font-weight: 600; letter-spacing: 0.22em; }
-.site-header .wordmark-main { font-size: 2.2rem; letter-spacing: 0; }
-.site-header .wordmark-sub { font-size: 0.6rem; letter-spacing: 0; }
-.main-nav { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 34px); }
-.main-nav a { position: relative; padding: 8px 0; color: #e5ddd1; font-size: 0.78rem; font-weight: 600; text-decoration: none; transition: color 160ms ease; }
+.site-header .wordmark-main { font-size: 2.8rem; letter-spacing: 0; }
+.site-header .wordmark-sub { font-size: 0.75rem; letter-spacing: 0; }
+.main-nav { display: flex; align-items: center; gap: clamp(12px, 1.4vw, 24px); }
+.main-nav a { position: relative; padding: 8px 0; color: #e5ddd1; font-size: 1rem; font-weight: 600; text-decoration: none; transition: color 160ms ease, transform 160ms ease; }
 .main-nav a:hover, .main-nav a.is-current { color: #d7a477; }
+@media (hover: hover) and (min-width: 1101px) {
+  .main-nav a:hover, .main-nav a:focus-visible { transform: scale(1.06); }
+}
 .main-nav a.is-current::after { position: absolute; right: 0; bottom: 1px; left: 0; height: 1px; background: var(--copper); content: ""; }
 .menu-toggle { display: none; }
 
@@ -122,6 +125,8 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .button:hover { background: #865538; }
 .button-outline { border-color: rgb(255 255 255 / 70%); background: transparent; }
 .button-outline:hover { border-color: #fff; background: #fff; color: var(--forest); }
+.button-outline-dark { border-color: var(--forest); color: var(--forest); }
+.button-outline-dark:hover { border-color: var(--forest); background: var(--forest); color: var(--paper); }
 .button-dark { background: var(--forest); }
 .button-dark:hover { background: var(--forest-deep); }
 
@@ -151,6 +156,8 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .carousel-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
 .carousel-dot[aria-current="true"]::before { width: 10px; height: 10px; background: var(--forest); }
 .carousel-status { margin: 4px 0 0; color: var(--muted); text-align: center; font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.carousel-playback { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 8px; }
+.carousel-playback .carousel-status { margin: 0; }
 
 @media (min-width: 721px) {
   .story-grid:has(> img[src="images/birthdays.png"]) { align-items: start; }
@@ -171,11 +178,15 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 
 .gallery-section { background: var(--paper); }
 .gallery-grid { display: grid; grid-template-columns: 1.1fr 0.9fr 0.9fr; grid-template-rows: 210px 210px; gap: 12px; }
+.wedding-gallery { grid-auto-rows: 210px; }
 .gallery-grid figure { position: relative; min-width: 0; margin: 0; overflow: hidden; background: var(--linen); }
 .gallery-grid figure:first-child { grid-row: span 2; }
 .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; }
 .gallery-grid figure:hover img { transform: scale(1.035); }
 .gallery-grid figcaption { position: absolute; right: 0; bottom: 0; left: 0; padding: 28px 15px 13px; background: linear-gradient(transparent, rgb(12 27 22 / 60%)); color: white; font-size: 0.69rem; letter-spacing: 0.04em; }
+.gallery-grid.birthday-gallery { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); grid-template-rows: auto; }
+.birthday-gallery figure { aspect-ratio: 4 / 3; }
+.gallery-grid.birthday-gallery figure:first-child { grid-column: auto; grid-row: auto; }
 
 .amenities-section { background: #e4d8c6; }
 .amenity-layout { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 70px; align-items: start; }
@@ -251,6 +262,7 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .form-field textarea { min-height: 118px; resize: vertical; }
 .form-field input::placeholder, .form-field textarea::placeholder { color: #929a91; }
 .inquiry-form .button { justify-self: start; }
+.inquiry-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; }
 .form-status { grid-column: 1 / -1; min-height: 1em; margin: 0; color: var(--forest); font-size: 0.78rem; }
 
 .visit-page { padding: 54px 24px 80px; }
@@ -277,6 +289,14 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .location-visit { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
 .location-visit .button { flex-shrink: 0; }
 
+.corporate-dining-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.corporate-dining-grid figure { margin: 0; min-width: 0; }
+.corporate-dining-grid img { aspect-ratio: 3 / 2; height: auto; object-fit: cover; }
+.corporate-dining-grid h3 { margin: 22px 0 12px; color: var(--forest); font-size: 1.8rem; line-height: 1.2; }
+.corporate-dining-grid p, .corporate-dining-actions p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+.corporate-dining-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px 28px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.corporate-dining-actions p { flex-basis: 100%; }
+
 @media (max-width: 900px) {
   .visit-layout { gap: 32px; }
 }
@@ -288,12 +308,24 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
   .location-intro { grid-template-columns: 1fr; gap: 24px; }
   .location-map { height: 380px; }
   .location-visit { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .corporate-dining-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+
+@media (max-width: 1100px) {
+  .menu-toggle { display: inline-flex; min-height: 44px; align-items: center; gap: 9px; padding: 7px 10px; border: 1px solid rgb(255 255 255 / 25%); border-radius: 2px; background: transparent; color: var(--paper); font-size: 0.9rem; font-weight: 700; }
+  .menu-icon, .menu-icon::before, .menu-icon::after { display: block; width: 16px; height: 1px; background: currentColor; }
+  .menu-icon { position: relative; }
+  .menu-icon::before, .menu-icon::after { position: absolute; left: 0; content: ""; }
+  .menu-icon::before { top: -5px; }
+  .menu-icon::after { top: 5px; }
+  .main-nav { position: absolute; top: 100%; right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 8px 20px 17px; border-bottom: 1px solid rgb(255 255 255 / 15%); background: var(--forest-deep); box-shadow: 0 12px 18px rgb(13 27 22 / 24%); }
+  .main-nav.is-open { display: flex; flex-direction: column; }
+  .main-nav a { padding: 12px 3px; border-bottom: 1px solid rgb(255 255 255 / 12%); color: #e5ddd1; font-size: 1rem; }
+  .main-nav a.is-current::after { right: auto; width: 32px; }
 }
 
 @media (max-width: 900px) {
   .site-header { gap: 18px; }
-  .main-nav { gap: 14px; }
-  .main-nav a { font-size: 0.72rem; }
   .home-intro h1 { font-size: 4.1rem; }
   .event-card { min-height: 470px; }
   .event-card h2 { font-size: 2.45rem; }
@@ -309,17 +341,7 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 
 @media (max-width: 720px) {
   .manager-banner { min-height: 32px; font-size: 0.59rem; }
-  .site-header { min-height: 73px; padding: 11px 20px; }
-  .menu-toggle { display: inline-flex; min-height: 40px; align-items: center; gap: 9px; padding: 7px 10px; border: 1px solid rgb(255 255 255 / 25%); border-radius: 2px; background: transparent; color: var(--paper); font-size: 0.73rem; font-weight: 700; }
-  .menu-icon, .menu-icon::before, .menu-icon::after { display: block; width: 16px; height: 1px; background: currentColor; }
-  .menu-icon { position: relative; }
-  .menu-icon::before, .menu-icon::after { position: absolute; left: 0; content: ""; }
-  .menu-icon::before { top: -5px; }
-  .menu-icon::after { top: 5px; }
-  .main-nav { position: absolute; top: 100%; right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 8px 20px 17px; border-bottom: 1px solid rgb(255 255 255 / 15%); background: var(--forest-deep); box-shadow: 0 12px 18px rgb(13 27 22 / 24%); }
-  .main-nav.is-open { display: flex; flex-direction: column; }
-  .main-nav a { padding: 12px 3px; border-bottom: 1px solid rgb(255 255 255 / 12%); color: #e5ddd1; font-size: 0.82rem; }
-  .main-nav a.is-current::after { right: auto; width: 32px; }
+  .site-header { min-height: 92px; padding: 18px 20px; }
   .home-intro { grid-template-columns: 1fr; gap: 20px; padding: 53px 23px 34px; }
   .home-intro h1 { max-width: 580px; font-size: 3.8rem; }
   .home-intro-copy { max-width: 510px; font-size: 0.87rem; }
@@ -344,6 +366,7 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
   .package-grid { grid-template-columns: 1fr; }
   .package-card { min-height: 275px; }
   .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 330px 200px; gap: 8px; }
+  .wedding-gallery { grid-auto-rows: 200px; }
   .gallery-grid figure:first-child { grid-column: 1 / -1; grid-row: auto; }
   .amenity-layout { grid-template-columns: 1fr; gap: 26px; }
   .amenity-intro h2 { font-size: 2.8rem; }
@@ -367,8 +390,8 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 @media (max-width: 420px) {
   .manager-banner { flex-wrap: wrap; gap: 3px; padding: 6px 10px; }
   .wordmark-main { font-size: 1.1rem; }
-  .site-header .wordmark-main { font-size: 1.8rem; }
-  .site-header .wordmark-sub { max-width: 190px; font-size: 0.55rem; line-height: 1.5; }
+  .site-header .wordmark-main { font-size: 2.1rem; }
+  .site-header .wordmark-sub { max-width: 190px; font-size: 0.65rem; line-height: 1.5; }
   .home-intro h1 { font-size: 2.8rem; }
   .page-hero h1 { font-size: 3.35rem; }
   .event-card h2 { font-size: 3rem; }
@@ -382,6 +405,7 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
   .inquiry-form { grid-template-columns: 1fr; }
   .form-field.full, .form-status { grid-column: auto; }
   .gallery-grid { grid-template-rows: 270px 170px; }
+  .wedding-gallery { grid-auto-rows: 170px; }
   .site-footer { padding-right: 20px; padding-left: 20px; }
 }
 
