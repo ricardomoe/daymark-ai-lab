@@ -8,6 +8,50 @@ const contactInformation = {
   'Venue location': { text: 'Golden Ears Provincial Park, 24480 Fern Crescent, Maple Ridge, BC V4R 2S1' },
 };
 
+document.querySelectorAll('.main-nav, .footer-links').forEach(navigation => {
+  if (navigation.querySelector('a[href="book-visit.html"]')) return;
+  const link = document.createElement('a');
+  link.href = 'book-visit.html';
+  link.textContent = 'Book a visit';
+  navigation.append(link);
+});
+
+document.querySelectorAll('.main-nav a[href="contact.html"]').forEach(link => {
+  link.textContent = 'Meet Us';
+});
+
+document.querySelectorAll('.main-nav, .footer-links').forEach(navigation => {
+  if (navigation.querySelector('a[href="location.html"]')) return;
+  const link = document.createElement('a');
+  link.href = 'location.html';
+  link.textContent = 'Find Us';
+  navigation.insertBefore(link, navigation.querySelector('a[href="book-visit.html"]'));
+});
+
+const venueAddress = contactInformation['Venue location'].text;
+document.querySelectorAll('[data-location-address]').forEach(address => {
+  address.textContent = venueAddress;
+});
+document.querySelectorAll('[data-location-map]').forEach(map => {
+  const apiKey = document.querySelector('meta[name="google-maps-embed-api-key"]')?.content.trim();
+  if (!apiKey) return;
+  const destination = new URL('https://www.google.com/maps/embed/v1/place');
+  destination.searchParams.set('key', apiKey);
+  destination.searchParams.set('q', venueAddress);
+  destination.searchParams.set('zoom', '16');
+  map.src = destination.href;
+  map.hidden = false;
+  const status = document.querySelector('[data-location-map-status]');
+  if (status) status.hidden = true;
+});
+document.querySelectorAll('[data-location-directions], [data-location-map-link]').forEach(link => {
+  const directions = link.hasAttribute('data-location-directions');
+  const destination = new URL(directions ? 'https://www.google.com/maps/dir/' : 'https://www.google.com/maps/search/');
+  destination.searchParams.set('api', '1');
+  destination.searchParams.set(directions ? 'destination' : 'query', venueAddress);
+  link.href = destination.href;
+});
+
 document.title = document.title.replaceAll('Alder & Summit', venueName);
 document.querySelectorAll('meta[name="description"]').forEach(meta => {
   meta.content = meta.content.replaceAll('Alder & Summit', venueName);
@@ -149,6 +193,57 @@ document.querySelectorAll('.wedding-carousel').forEach(carousel => {
   status.hidden = false;
   updateSelection();
 });
+
+const visitForm = document.getElementById('visitForm');
+if (visitForm) {
+  const visitDate = document.getElementById('visitDate');
+  const visitStatus = document.getElementById('visitStatus');
+  const whatsAppLink = document.getElementById('visitWhatsApp');
+  const todayInPacific = () => {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Vancouver', year: 'numeric', month: '2-digit', day: '2-digit',
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  };
+  visitDate.min = todayInPacific();
+  visitForm.addEventListener('input', () => {
+    visitStatus.textContent = '';
+    whatsAppLink.hidden = true;
+    whatsAppLink.removeAttribute('href');
+    visitForm.querySelectorAll('input').forEach(input => input.setCustomValidity(''));
+  });
+  visitForm.addEventListener('submit', event => {
+    event.preventDefault();
+    visitDate.min = todayInPacific();
+    ['visitName', 'visitPhone'].forEach(id => {
+      const input = document.getElementById(id);
+      input.setCustomValidity(input.value.trim() ? '' : 'Please enter your contact information.');
+    });
+    if (!visitForm.reportValidity()) return;
+    const details = Object.fromEntries(new FormData(visitForm));
+    const message = [
+      'Hello Juliana! I would like to visit Bella Vista Events.',
+      '',
+      `Preferred visit date: ${details.date}`,
+      `Preferred time (Pacific): ${details.time || 'Flexible'}`,
+      `Name: ${details.name.trim()}`,
+      `Email: ${details.email.trim()}`,
+      `Phone: ${details.phone.trim()}`,
+      `Celebration: ${details.event || 'Not specified'}`,
+      '',
+      details.message.trim(),
+      '',
+      'Please let me know if this date works. I understand the visit needs confirmation.',
+    ].join('\n');
+    const destination = new URL(contactInformation.WhatsApp.href);
+    destination.searchParams.set('text', message);
+    whatsAppLink.href = destination.href;
+    whatsAppLink.hidden = false;
+    visitStatus.textContent = 'Your request is ready. Send it in WhatsApp so Juliana can confirm your visit.';
+    window.open(destination.href, '_blank', 'noopener,noreferrer');
+  });
+}
 
 const inquiryForm = document.getElementById('inquiryForm');
 if (inquiryForm) {

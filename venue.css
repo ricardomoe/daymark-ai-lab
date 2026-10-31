@@ -253,6 +253,43 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .inquiry-form .button { justify-self: start; }
 .form-status { grid-column: 1 / -1; min-height: 1em; margin: 0; color: var(--forest); font-size: 0.78rem; }
 
+.visit-page { padding: 54px 24px 80px; }
+.visit-page h1 { margin: 0 0 36px; color: var(--forest); font-size: 3.2rem; line-height: 1.1; }
+.visit-layout { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 64px; }
+.visit-layout h2 { margin: 0 0 20px; color: var(--forest); font-size: 1.8rem; }
+.visit-overview > p { margin: 0 0 24px; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+.visit-overview > img { height: auto; aspect-ratio: 3 / 2; object-fit: cover; margin-bottom: 28px; }
+.visit-overview .contact-details { grid-template-columns: 1fr; }
+.visit-note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.65; }
+.visit-consent { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 10px; color: var(--muted); font-size: 0.78rem; line-height: 1.65; }
+.visit-consent input { flex: 0 0 18px; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--forest); }
+.visit-submit, .visit-whatsapp { grid-column: 1 / -1; max-width: 100%; }
+.visit-whatsapp[hidden] { display: none; }
+
+.location-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 64px; margin-bottom: 32px; }
+.location-page h2 { margin: 0 0 14px; color: var(--forest); font-size: 1.8rem; }
+.location-page p:not(.eyebrow) { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+.location-intro address { margin-bottom: 16px; color: var(--ink); font-style: normal; font-size: 0.95rem; line-height: 1.8; }
+.location-map { display: block; width: 100%; height: clamp(360px, 60vh, 560px); border: 0; background: var(--linen); }
+.location-map[hidden], .location-map-status[hidden] { display: none; }
+.location-page .location-map-status { padding: 32px 24px; background: var(--linen); }
+.location-map-section > a { margin-top: 16px; }
+.location-visit { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
+.location-visit .button { flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  .visit-layout { gap: 32px; }
+}
+@media (max-width: 720px) {
+  .visit-page { padding: 40px 22px 60px; }
+  .visit-page h1 { font-size: 2.6rem; margin-bottom: 28px; }
+  .visit-layout { grid-template-columns: 1fr; gap: 40px; }
+  .visit-form-panel { grid-row: 1; }
+  .location-intro { grid-template-columns: 1fr; gap: 24px; }
+  .location-map { height: 380px; }
+  .location-visit { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+
 @media (max-width: 900px) {
   .site-header { gap: 18px; }
   .main-nav { gap: 14px; }

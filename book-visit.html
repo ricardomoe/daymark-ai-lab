@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#172e27" />
+  <meta name="description" content="Request a visit to Bella Vista Events. Choose a preferred date and get in touch with Juliana to arrange your venue tour." />
+  <title>Book a Visit | Bella Vista Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="venue.css" />
+</head>
+<body>
+  <div class="manager-banner">A beautiful setting for your celebration · British Columbia</div>
+  <header class="site-header">
+    <a class="wordmark" href="index.html" aria-label="Bella Vista event venue home"><span class="wordmark-main">BELLA VISTA</span><span class="wordmark-sub">BRITISH COLUMBIA</span></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNav"><span class="menu-icon" aria-hidden="true"></span><span>Menu</span></button>
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation"><a href="index.html">Home</a><a href="weddings.html">Weddings</a><a href="corporate.html">Corporate Events</a><a href="birthdays.html">Birthdays</a><a href="contact.html">Contact</a><a class="is-current" href="book-visit.html" aria-current="page">Book a visit</a></nav>
+  </header>
+  <main class="visit-page">
+    <div class="section-inner">
+      <p class="eyebrow">COME SAY HELLO</p>
+      <h1>Book a visit with us.</h1>
+      <div class="visit-layout">
+        <section class="visit-overview" aria-label="Your venue visit">
+          <p>Come explore Bella Vista Events and picture your celebration here. Juliana and Bruna look forward to meeting you, hearing your ideas, and showing you around.</p>
+          <img src="images/wedding01.jpg" alt="A wedding celebration at Bella Vista Events" width="1421" height="945" />
+          <h2>A little time to imagine.</h2>
+          <p>Choose a date that works for you. We will be in touch to confirm availability and arrange your visit.</p>
+          <ul class="contact-details">
+            <li><span>Venue location</span><strong>Golden Ears Provincial Park, 24480 Fern Crescent, Maple Ridge, BC V4R 2S1</strong></li>
+            <li><span>WhatsApp</span><a data-contact-whatsapp href="https://wa.me/16044041562" target="_blank" rel="noopener">604-404-1562</a></li>
+          </ul>
+        </section>
+        <section class="visit-form-panel" aria-labelledby="visitHeading">
+          <h2 id="visitHeading">Your visit details</h2>
+          <form class="inquiry-form" id="visitForm">
+            <div class="form-field"><label for="visitDate">Preferred visit date</label><input id="visitDate" name="date" type="date" required aria-describedby="visitAvailability" /></div>
+            <div class="form-field"><label for="visitTime">Preferred time (Pacific, optional)</label><input id="visitTime" name="time" type="time" /></div>
+            <p class="visit-note" id="visitAvailability">Your preferred date and time are subject to confirmation.</p>
+            <div class="form-field full"><label for="visitName">Your name</label><input id="visitName" name="name" autocomplete="name" maxlength="100" required /></div>
+            <div class="form-field"><label for="visitEmail">Email</label><input id="visitEmail" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
+            <div class="form-field"><label for="visitPhone">Phone</label><input id="visitPhone" name="phone" type="tel" autocomplete="tel" minlength="7" maxlength="40" required /></div>
+            <div class="form-field full"><label for="visitEvent">Your celebration (optional)</label><select id="visitEvent" name="event"><option value="">Choose an event</option><option>Wedding</option><option>Corporate event</option><option>Birthday</option><option>Other gathering</option></select></div>
+            <div class="form-field full"><label for="visitMessage">Anything you would like us to know? (optional)</label><textarea id="visitMessage" name="message" maxlength="1000"></textarea></div>
+            <label class="visit-consent"><input type="checkbox" required />I agree to share these details with Juliana on WhatsApp for this visit request.</label>
+            <button class="button button-dark visit-submit" type="submit">Continue to WhatsApp <span aria-hidden="true">↗</span></button>
+            <p class="visit-note">Send the prepared message in WhatsApp to request your visit. Your visit is not booked until we confirm it.</p>
+            <p class="form-status" id="visitStatus" role="status" aria-live="polite"></p>
+            <a class="text-link text-link-dark visit-whatsapp" id="visitWhatsApp" target="_blank" rel="noopener" hidden>Open your WhatsApp request <span aria-hidden="true">↗</span></a>
+          </form>
+          <noscript><p>The visit form needs JavaScript. <a href="https://wa.me/16044041562" target="_blank" rel="noopener">Contact Juliana on WhatsApp</a> to arrange a visit.</p></noscript>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="footer-main"><div class="footer-brand"><a class="wordmark wordmark-light" href="index.html"><span class="wordmark-main">BELLA VISTA</span></a><p>A considered setting for gatherings that stay with you.</p></div><div class="footer-contact"><p class="eyebrow">CONTACT INFORMATION</p><p><span>Email</span><strong>Juliana@churrasco.online</strong></p><p><span>Phone</span><strong>604-404-1562</strong></p><p><span>WhatsApp</span><strong>604-404-1562</strong></p><p><span>Venue location</span><strong>Golden Ears Provincial Park, 24480 Fern Crescent, Maple Ridge, BC V4R 2S1</strong></p></div><div class="footer-links"><p class="eyebrow">EXPLORE</p><a href="weddings.html">Weddings</a><a href="corporate.html">Corporate events</a><a href="birthdays.html">Birthdays</a><a href="contact.html">Contact Us</a><a href="book-visit.html">Book a visit</a></div></div><div class="footer-bottom"><span>© <span data-year></span> Bella Vista</span><span>Thoughtfully hosted at Bella Vista</span></div></footer>
+  <script src="site.js"></script>
+</body>
+</html>
