@@ -25,10 +25,33 @@ document.querySelectorAll('.wordmark-main').forEach(mark => {
   mark.textContent = 'BELLA VISTA';
 });
 document.querySelectorAll('.wordmark-sub').forEach(mark => {
-  mark.textContent = 'EVENTS BY JULIANA ANSCHAU';
+  if (mark.closest('.site-header')) {
+    mark.textContent = 'YOUR EVENT VENUE · BRITISH COLUMBIA';
+  } else {
+    mark.remove();
+  }
 });
 document.querySelectorAll('.wordmark[aria-label]').forEach(mark => {
-  mark.setAttribute('aria-label', `${venueName} home`);
+  mark.setAttribute('aria-label', mark.closest('.site-header') ? 'Bella Vista event venue home' : `${venueName} home`);
+});
+document.querySelectorAll('.manager-banner').forEach(banner => {
+  banner.textContent = 'A beautiful setting for your celebration · British Columbia';
+});
+document.querySelectorAll('.footer-links a[href="contact.html"]').forEach(link => {
+  link.textContent = 'Contact Us';
+});
+document.querySelectorAll('.footer-contact p').forEach(row => {
+  if (row.querySelector('span')?.textContent.trim() === 'Event Manager') {
+    row.remove();
+  }
+});
+document.querySelectorAll('.footer-bottom span').forEach(element => {
+  element.childNodes.forEach(node => {
+    if (node.nodeType !== Node.TEXT_NODE) return;
+    node.textContent = node.textContent
+      .replaceAll(venueName, 'Bella Vista')
+      .replaceAll('Thoughtfully hosted by Juliana Anschau', 'Thoughtfully hosted at Bella Vista');
+  });
 });
 
 document.querySelectorAll('.footer-contact p, .contact-details li').forEach(row => {
@@ -73,6 +96,58 @@ if (menuButton && mainNav) {
 
 document.querySelectorAll('[data-year]').forEach(element => {
   element.textContent = new Date().getFullYear();
+});
+
+document.querySelectorAll('.wedding-carousel').forEach(carousel => {
+  const viewport = carousel.querySelector('.carousel-viewport');
+  const photos = [...viewport.querySelectorAll('img')];
+  const dotContainer = carousel.querySelector('.carousel-dots');
+  const status = carousel.querySelector('.carousel-status');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let currentIndex = 0;
+
+  const showPhoto = index => {
+    const nextIndex = (index + photos.length) % photos.length;
+    viewport.scrollTo({
+      left: nextIndex * viewport.clientWidth,
+      behavior: reducedMotion.matches ? 'instant' : 'smooth',
+    });
+  };
+
+  const dots = photos.map((photo, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'carousel-dot';
+    button.setAttribute('aria-label', `Show wedding photo ${index + 1}`);
+    button.setAttribute('aria-controls', viewport.id);
+    button.title = `Photo ${index + 1}`;
+    button.addEventListener('click', () => showPhoto(index));
+    dotContainer.append(button);
+    return button;
+  });
+
+  const updateSelection = () => {
+    currentIndex = Math.max(0, Math.min(photos.length - 1, Math.round(viewport.scrollLeft / viewport.clientWidth)));
+    dots.forEach((dot, index) => dot.setAttribute('aria-current', String(index === currentIndex)));
+    status.textContent = `${currentIndex + 1} / ${photos.length}`;
+  };
+
+  carousel.querySelector('[data-carousel-previous]').addEventListener('click', () => showPhoto(currentIndex - 1));
+  carousel.querySelector('[data-carousel-next]').addEventListener('click', () => showPhoto(currentIndex + 1));
+  viewport.addEventListener('scroll', updateSelection, { passive: true });
+  carousel.addEventListener('keydown', event => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const destinations = { ArrowLeft: currentIndex - 1, ArrowRight: currentIndex + 1, Home: 0, End: photos.length - 1 };
+    if (!(event.key in destinations)) return;
+    event.preventDefault();
+    showPhoto(destinations[event.key]);
+  });
+  new ResizeObserver(() => {
+    viewport.scrollTo({ left: currentIndex * viewport.clientWidth, behavior: 'instant' });
+  }).observe(viewport);
+  carousel.querySelector('.carousel-controls').hidden = false;
+  status.hidden = false;
+  updateSelection();
 });
 
 const inquiryForm = document.getElementById('inquiryForm');

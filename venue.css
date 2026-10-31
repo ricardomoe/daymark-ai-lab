@@ -58,6 +58,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .wordmark-main { font-family: "Playfair Display", Georgia, serif; font-size: 1.28rem; letter-spacing: 0.075em; line-height: 1; }
 .wordmark-main i { color: var(--copper); font-style: normal; }
 .wordmark-sub { color: #c9bba8; font-size: 0.54rem; font-weight: 600; letter-spacing: 0.22em; }
+.site-header .wordmark-main { font-size: 2.2rem; letter-spacing: 0; }
+.site-header .wordmark-sub { font-size: 0.6rem; letter-spacing: 0; }
 .main-nav { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 34px); }
 .main-nav a { position: relative; padding: 8px 0; color: #e5ddd1; font-size: 0.78rem; font-weight: 600; text-decoration: none; transition: color 160ms ease; }
 .main-nav a:hover, .main-nav a.is-current { color: #d7a477; }
@@ -97,9 +99,9 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .text-link b { color: #e9bd96; font-size: 1rem; font-weight: 400; }
 
 .host-note { display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center; gap: clamp(36px, 8vw, 120px); max-width: 1380px; margin: 0 auto; padding: clamp(64px, 10vw, 140px) clamp(24px, 8vw, 120px); }
-.host-note-image { position: relative; min-height: 430px; }
-.host-note-image img { position: absolute; inset: 0; height: 100%; object-fit: cover; }
-.host-note-image span { position: absolute; right: 0; bottom: 0; max-width: 100%; padding: 12px 15px; background: var(--forest-deep); color: white; font-size: 0.6rem; letter-spacing: 0.12em; line-height: 1.6; text-align: right; }
+.host-note-image { min-height: 0; }
+.host-note-image img { height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.host-note-image span { display: block; padding-top: 10px; color: var(--muted); font-size: 0.6rem; letter-spacing: 0; line-height: 1.6; }
 .host-note-image span a { color: inherit; }
 .host-note-copy { max-width: 460px; }
 .host-note h2 { margin-bottom: 22px; color: var(--forest); font-size: 3.65rem; line-height: 1.1; }
@@ -135,6 +137,26 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .story-copy { max-width: 490px; }
 .story-copy h2 { margin-bottom: 20px; color: var(--forest); font-size: 3.9rem; line-height: 1.08; }
 .story-copy p:not(.eyebrow) { color: var(--muted); font-size: 0.9rem; line-height: 1.9; }
+
+.wedding-carousel { min-width: 0; }
+.carousel-viewport { display: flex; aspect-ratio: 3 / 2; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; background: var(--forest-deep); }
+.carousel-viewport::-webkit-scrollbar { display: none; }
+.carousel-viewport img { flex: 0 0 100%; width: 100%; min-width: 0; height: 100%; object-fit: contain; scroll-snap-align: start; }
+.carousel-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 12px; }
+.carousel-controls[hidden], .carousel-status[hidden] { display: none; }
+.carousel-arrow { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--forest); font-size: 1.4rem; }
+.carousel-arrow:hover { background: var(--forest); color: var(--paper); }
+.carousel-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 0; }
+.carousel-dot { display: grid; place-items: center; width: 24px; height: 32px; padding: 0; border: 0; background: transparent; }
+.carousel-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.carousel-dot[aria-current="true"]::before { width: 10px; height: 10px; background: var(--forest); }
+.carousel-status { margin: 4px 0 0; color: var(--muted); text-align: center; font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+
+@media (min-width: 721px) {
+  .story-grid:has(> img[src="images/birthdays.png"]) { align-items: start; }
+  .story-image[src="images/birthdays.png"] { margin-top: calc(0.66rem * 1.5 + 15px); }
+  .story-grid:has(> img[src="images/birthdays.png"]) .story-copy h2 { margin-top: 0; }
+}
 
 .packages-section { background: var(--forest); color: #fff; }
 .packages-section .section-heading h2 { color: #fff; }
@@ -201,6 +223,14 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
 .contact-page-intro .section-inner { display: grid; grid-template-columns: 1fr 0.6fr; align-items: end; gap: 40px; }
 .contact-page-intro h1 { max-width: 740px; margin: 0; color: var(--forest); font-size: 6.2rem; line-height: 0.98; }
 .contact-page-intro > .section-inner > p { max-width: 360px; margin-bottom: 4px; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+.team-section { padding: 0 24px 70px; }
+.team-photo { display: block; width: 100%; height: auto; }
+.team-bios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; padding-top: 36px; }
+.team-bio { min-width: 0; }
+.team-bio h2 { margin-bottom: 22px; color: var(--forest); font-size: 2.4rem; line-height: 1.15; }
+.team-bio h2 span { display: block; margin-top: 10px; font-family: "DM Sans", sans-serif; font-size: 0.85rem; font-weight: 600; }
+.team-bio p { margin-bottom: 18px; color: var(--muted); font-size: 0.95rem; line-height: 1.85; }
+.team-bio p:last-child { margin-bottom: 0; }
 .contact-page-main { padding: 0 24px 90px; }
 .contact-page-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 18px; width: min(100%, 1220px); margin: 0 auto; }
 .contact-manager-card { padding: clamp(25px, 4vw, 46px); background: var(--forest); color: #fff; }
@@ -261,7 +291,6 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
   .event-card-content { padding: 20px 24px 27px; }
   .event-card h2 { font-size: 3.6rem; }
   .host-note { grid-template-columns: 1fr; gap: 31px; padding: 65px 23px; }
-  .host-note-image { min-height: 330px; }
   .host-note-copy { max-width: 560px; }
   .page-hero { min-height: 690px; min-height: 76svh; }
   .page-hero-content { padding: 60px 24px 52px; }
@@ -294,12 +323,15 @@ h1, h2, h3 { font-family: "Playfair Display", Georgia, serif; font-weight: 400; 
   .footer-bottom { flex-direction: column; gap: 6px; }
   .contact-page-intro .section-inner { grid-template-columns: 1fr; gap: 17px; }
   .contact-page-intro h1 { font-size: 4.1rem; }
+  .team-bios { grid-template-columns: 1fr; gap: 32px; padding-top: 28px; }
   .contact-page-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 420px) {
   .manager-banner { flex-wrap: wrap; gap: 3px; padding: 6px 10px; }
   .wordmark-main { font-size: 1.1rem; }
+  .site-header .wordmark-main { font-size: 1.8rem; }
+  .site-header .wordmark-sub { max-width: 190px; font-size: 0.55rem; line-height: 1.5; }
   .home-intro h1 { font-size: 2.8rem; }
   .page-hero h1 { font-size: 3.35rem; }
   .event-card h2 { font-size: 3rem; }
